@@ -145,7 +145,6 @@ def get_urls():
                 print(mrp)
                 print(discount)
                 print(brand)
-
                 print(ratings)
                 print(reviews)
                 print(f"load type is {load_type}")
