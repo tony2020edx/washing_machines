@@ -72,7 +72,6 @@ def get_urls():
                     discount = re.findall(r'\d+', discount)
                     discount = discount[0]
 
-
                 except Exception as e:
 
                     discount = 0
