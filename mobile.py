@@ -1,14 +1,10 @@
-import requests
-
-from bs4 import BeautifulSoup
-
+import csv
 import re
 
-import csv
+import requests
+from bs4 import BeautifulSoup
 
-import time
-
-base_url = "https://www.flipkart.com/search?sid=tyy%2C4io&otracker=CLP_Filters&p%5B%5D=facets.operating_system%255B%255D%3DAndroid&p%5B%5D=facets.availability%255B%255D%3DExclude%2BOut%2Bof%2BStock&page="
+base_url = "https://www.flipkart.com/mobiles/pr?sid=tyy%2C4io&otracker=categorytree&sort=price_asc&p%5B%5D=facets.type%255B%255D%3DSmartphones&page="
 
 search_page_url_list = []
 
@@ -16,29 +12,30 @@ product_url_list = []
 
 all_fields = []
 
+
 def generate_search_page_url():  # function to generate the pagination urls and save it to the list pagination urls
 
     count = 0
 
-    while count < 70:
-        page_url = base_url + str(count) #generating the url
+    while count < 3:
+        page_url = base_url + str(count)  # generating the url
 
         print(page_url)
 
-        search_page_url_list.append(page_url) #append to the list pagination urls
+        search_page_url_list.append(page_url)  # append to the list pagination urls
 
         print(f"the scraped page count is {count}")
 
         count = count + 1
 
+
 generate_search_page_url()
 
-def get_data():
 
+def get_data():
     for page in search_page_url_list:
 
         response = requests.get(page)
-
 
         if response.status_code == 200:
 
@@ -143,34 +140,23 @@ def get_data():
 
                 try:
 
-                    commonclass = link.find_all('li', attrs={'class':'rgWa7D'})
+                    description = []
+
+                    for desc in link.find_all('li', attrs={'class': 'rgWa7D'}):
+                        description.append(desc.text)
 
 
-                    for i in range(0, len(commonclass)):
-                        p = commonclass[i].text
+                    print(F"the description is {description}")
 
-                        if ("RAM" in p):
-                            memmory_specs = p
-                            print(f"memmory_specs is {memmory_specs}" )
-                        elif("MP" in p):
-                            camera_specs = p
-                            print(f"camera_specs is {camera_specs}")
-                        elif("Battery" in p):
-                            battery_capasity = p
-                            print(f"battery_capasity is {battery_capasity}")
-                        elif("Processor" in p):
-                            processor = p
-                            print(f"processor is {processor}")
-                        elif("Display" in p):
-                            display_size = p
-                            print(f"display_size is {display_size}")
+
+
 
 
 
 
                 except Exception as e:
 
-                    item = "Not available"
+                    description = "not available"
 
                 all_fields.append(  # saving all elements to a list
                     {
@@ -182,20 +168,14 @@ def get_data():
                         "Discount_percentage": discount,
                         "Number_of_ratings": ratings,
                         "Number_of_reviews": reviews,
-                        "Memmory": memmory_specs,
-                        "Display_size":display_size,
-                        "Camera_specs": camera_specs,
-                        "Battery_capacity": battery_capasity,
-                        "Processor": processor,
                         "UPC": upc,
                         "Star_rating": star_rating
-
 
                     })
 
                 keys = all_fields[0].keys()
 
-                with open('mobilesv3.csv', 'w', newline='') as output_file:  # writing all elements to csv
+                with open('testdatav4.csv', 'w', newline='') as output_file:  # writing all elements to csv
                     dict_writer = csv.DictWriter(output_file, keys)
                     dict_writer.writeheader()
 
@@ -206,8 +186,6 @@ def get_data():
             pass
 
 
-
-
-
 get_data()
+
 
