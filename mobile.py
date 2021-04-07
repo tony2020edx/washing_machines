@@ -144,11 +144,20 @@ def get_data():
 
 
 
+
                     for desc in link.find_all('li', attrs={'class': 'rgWa7D'}):
 
-                        description.append(desc.text)
+                        desc = desc.text
 
-                        print(description)
+                        desc = desc.replace('|', '')
+
+                        description.append(desc)
+
+
+                    print(description)
+
+
+
 
 
 
@@ -168,7 +177,9 @@ def get_data():
                         "Number_of_reviews": reviews,
                         "UPC": upc,
                         "Star_rating": star_rating,
-                        "product_description": description
+                        "product_description": description,
+                        "Battery_capacity":battery,
+                        "Ram": ram,
 
                     })
 
