@@ -142,15 +142,13 @@ def get_data():
 
                     description = []
 
+
+
                     for desc in link.find_all('li', attrs={'class': 'rgWa7D'}):
+
                         description.append(desc.text)
 
-
-                    print(F"the description is {description}")
-
-
-
-
+                        print(description)
 
 
 
@@ -169,13 +167,14 @@ def get_data():
                         "Number_of_ratings": ratings,
                         "Number_of_reviews": reviews,
                         "UPC": upc,
-                        "Star_rating": star_rating
+                        "Star_rating": star_rating,
+                        "product_description": description
 
                     })
 
                 keys = all_fields[0].keys()
 
-                with open('testdatav4.csv', 'w', newline='') as output_file:  # writing all elements to csv
+                with open('testdatav5.csv', 'w', newline='') as output_file:  # writing all elements to csv
                     dict_writer = csv.DictWriter(output_file, keys)
                     dict_writer.writeheader()
 
