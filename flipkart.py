@@ -171,7 +171,7 @@ def get_urls(): #function to parse data from each url generated in the generate 
 
                 keys = all_elements[0].keys()
 
-                with open('washing_machines.csv', 'w', newline='') as output_file:  # writing all elements to csv
+                with open('washing_machinesv1.csv', 'w', newline='') as output_file:  # writing all elements to csv
                     dict_writer = csv.DictWriter(output_file, keys)
                     dict_writer.writeheader()
                     dict_writer.writerows(all_elements)
