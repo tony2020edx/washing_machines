@@ -4,7 +4,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-base_url = "https://www.flipkart.com/mobiles/pr?sid=tyy%2C4io&otracker=categorytree&sort=price_asc&p%5B%5D=facets.type%255B%255D%3DSmartphones&page="
+base_url = "https://www.flipkart.com/mobiles/pr?sid=tyy%2C4io&p%5B%5D=facets.price_range.from%3D16000&otracker=categorytree&p%5B%5D=facets.price_range.to%3DMax&p%5B%5D=facets.availability%255B%255D%3DExclude%2BOut%2Bof%2BStock&p%5B%5D=facets.type%255B%255D%3DSmartphones&page="
 
 search_page_url_list = []
 
@@ -17,7 +17,7 @@ def generate_search_page_url():  # function to generate the pagination urls and 
 
     count = 0
 
-    while count < 3:
+    while count < 50:
         page_url = base_url + str(count)  # generating the url
 
         print(page_url)
@@ -42,6 +42,7 @@ def get_data():
             soup = BeautifulSoup(response.text, 'lxml')
 
             for link in soup.find_all('a', attrs={'class': '_1fQZEK'}):
+
                 item_url = " https://www.flipkart.com" + link.get('href')
 
                 item_url = re.split("\&", item_url)
@@ -143,8 +144,6 @@ def get_data():
                     description = []
 
 
-
-
                     for desc in link.find_all('li', attrs={'class': 'rgWa7D'}):
 
                         desc = desc.text
@@ -152,14 +151,6 @@ def get_data():
                         desc = desc.replace('|', '')
 
                         description.append(desc)
-
-
-                    print(description)
-
-
-
-
-
 
                 except Exception as e:
 
@@ -178,14 +169,12 @@ def get_data():
                         "UPC": upc,
                         "Star_rating": star_rating,
                         "product_description": description,
-                        "Battery_capacity":battery,
-                        "Ram": ram,
 
                     })
 
                 keys = all_fields[0].keys()
 
-                with open('testdatav5.csv', 'w', newline='') as output_file:  # writing all elements to csv
+                with open('mobile4.csv', 'w', newline='') as output_file:  # writing all elements to csv
                     dict_writer = csv.DictWriter(output_file, keys)
                     dict_writer.writeheader()
 
