@@ -20,21 +20,21 @@ def generate_page_url():  # function to generate the pagination urls and save it
     count = 0
 
     while count < 1:
-
-        page_url = base_url + str(count) #generating the url
+        page_url = base_url + str(count)  # generating the url
 
         print(page_url)
 
-        pagination_urls.append(page_url) #append to the list pagination urls
+        pagination_urls.append(page_url)  # append to the list pagination urls
 
         print(count)
 
         count = count + 1
 
+
 generate_page_url()
 
 
-def get_data():  # function to parse data from each url generated in the generate url function
+def get_data():  # function to get product page links
 
     for page in pagination_urls:
 
@@ -45,10 +45,9 @@ def get_data():  # function to parse data from each url generated in the generat
             soup = BeautifulSoup(response.text, 'lxml')
 
             for link in soup.find_all('a', attrs={'class': 's1Q9rs'}):
-
                 item_url = " https://www.flipkart.com" + link.get('href')
 
-                item_url = re.split("\&", item_url)
+                item_url = re.split("&", item_url)
 
                 item_url = item_url[0]
 
@@ -60,8 +59,7 @@ def get_data():  # function to parse data from each url generated in the generat
 get_data()
 
 
-def get_title(soup):
-
+def get_title(soup):  # function to extract title
     try:
         title = soup.find('span', attrs={'class': 'B_NuCI'}).text.strip()
 
@@ -73,8 +71,8 @@ def get_title(soup):
 
     return title
 
-def get_brand(soup):
 
+def get_brand(soup):
     try:
         brand_name = soup.find('span', attrs={'class': 'B_NuCI'}).text
         brand = brand_name.split()
@@ -86,8 +84,8 @@ def get_brand(soup):
 
     return brand
 
-def get_mrp(soup):
 
+def get_mrp(soup):
     try:
 
         mrp = soup.find('div', attrs={'class': '_3I9_wc _2p6lqe'}).text.strip()
@@ -99,8 +97,8 @@ def get_mrp(soup):
 
     return mrp
 
-def get_sale_price(soup):
 
+def get_sale_price(soup):
     try:
         sale_price = soup.find('div', attrs={'class': '_30jeq3 _16Jk6d'}).text.strip()
         print(sale_price)
@@ -110,8 +108,8 @@ def get_sale_price(soup):
         sale_price = "Not available"
     return sale_price
 
-def get_discount(soup):
 
+def get_discount(soup):
     try:
         discount = soup.find('div', attrs={'class': '_3Ay6Sb _31Dcoz'}).text.strip()
         print(discount)
@@ -121,10 +119,10 @@ def get_discount(soup):
 
     return discount
 
-def get_oxymeter_type(soup):
 
+def get_oxymeter_type(soup):
     try:
-        oxymeter_type = soup.find('li', attrs = {'class': '_21lJbe'}).text.strip()
+        oxymeter_type = soup.find('li', attrs={'class': '_21lJbe'}).text.strip()
         print(oxymeter_type)
 
     except AttributeError:
@@ -134,29 +132,28 @@ def get_oxymeter_type(soup):
 
 
 def get_description(soup):
-
     try:
-        description = soup.find('div', attrs = {'class': '_1mXcCf RmoJUa'}).text.strip()
+        description = soup.find('div', attrs={'class': '_1mXcCf RmoJUa'}).text.strip()
         print(description)
     except AttributeError:
         description = "Description Not available"
 
     return description
 
-def get_seller_name(soup):
 
+def get_seller_name(soup):
     try:
-        seller_name = soup.find('div', attrs = {'class': '_1RLviY'}).text.strip()
+        seller_name = soup.find('div', attrs={'class': '_1RLviY'}).text.strip()
         print(seller_name)
     except AttributeError:
         seller_name = "Name Not available"
 
     return seller_name
 
-def get_ratings(soup):
 
+def get_ratings(soup):
     try:
-        number_of_ratings = soup.find('span', attrs = {'class': '_2_R_DZ'}).text
+        number_of_ratings = soup.find('span', attrs={'class': '_2_R_DZ'}).text
         temp = number_of_ratings.split()
         ratings = temp[0].strip()
         ratings = ratings.replace(',', '')
@@ -166,10 +163,10 @@ def get_ratings(soup):
 
     return ratings
 
-def get_reviews(soup):
 
+def get_reviews(soup):
     try:
-        number_of_reviews = soup.find('span', attrs = {'class': '_2_R_DZ'}).text
+        number_of_reviews = soup.find('span', attrs={'class': '_2_R_DZ'}).text
         temp = number_of_reviews.split()
         reviews = temp[-2].strip()
         reviews = reviews.replace(',', '')
@@ -178,11 +175,11 @@ def get_reviews(soup):
         reviews = "0"
     return reviews
 
-def get_star_rating(soup):
 
+def get_star_rating(soup):
     try:
 
-        star_rating = soup.find('div', attrs = {'class': '_3LWZlK'}).text.strip()
+        star_rating = soup.find('div', attrs={'class': '_3LWZlK'}).text.strip()
         print(f" the star_rating is {star_rating}")
 
     except AttributeError:
@@ -191,11 +188,11 @@ def get_star_rating(soup):
 
     return star_rating
 
-def get_upc(link):
 
+def get_upc(link):
     try:
 
-        upc = re.split("\=", link)
+        upc = re.split("=", link)
         upc = upc[-1]
         upc = upc.replace(',', '')
 
@@ -207,11 +204,8 @@ def get_upc(link):
     return upc
 
 
-
 def parse_data():
-
     for link in product_urls:
-
         new_page = requests.get(link)
         new_soup = BeautifulSoup(new_page.text, 'lxml')
 
@@ -253,9 +247,4 @@ def parse_data():
             dict_writer.writerows(all_elements)
 
 
-
-
 parse_data()
-
-
-
