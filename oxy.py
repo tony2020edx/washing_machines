@@ -63,7 +63,7 @@ def get_title(soup):  # function to extract title
     try:
         title = soup.find('span', attrs={'class': 'B_NuCI'}).text.strip()
 
-        print(title)
+        print(f" The is title {title}")
 
     except AttributeError:
 
@@ -77,7 +77,7 @@ def get_brand(soup):
         brand_name = soup.find('span', attrs={'class': 'B_NuCI'}).text
         brand = brand_name.split()
         brand = brand[0]
-        print(brand)
+        print(f" The brand is {brand}")
 
     except AttributeError:
         brand = " Not Available"
@@ -89,11 +89,23 @@ def get_mrp(soup):
     try:
 
         mrp = soup.find('div', attrs={'class': '_3I9_wc _2p6lqe'}).text.strip()
-        print(mrp)
+        mrp = re.split("₹", mrp)
+        mrp = mrp[-1]
+        mrp = mrp.replace(',', '')
+
+        print(f"The mrp is {mrp}")
 
     except AttributeError:
 
-        mrp = ""
+        try:
+            mrp = soup.find('div', attrs={'class': '_30jeq3 _16Jk6d'}).text.strip()
+            mrp = re.split("₹", mrp)
+            mrp = mrp[-1]
+            mrp = mrp.replace(',', '')
+
+        except AttributeError:
+
+            mrp = "0"
 
     return mrp
 
@@ -101,40 +113,35 @@ def get_mrp(soup):
 def get_sale_price(soup):
     try:
         sale_price = soup.find('div', attrs={'class': '_30jeq3 _16Jk6d'}).text.strip()
-        print(sale_price)
+        sale_price = re.split("₹", sale_price)
+        sale_price = sale_price[-1]
+        sale_price = sale_price.replace(',', '')
+        print(f"The sale_price is {sale_price}")
 
     except AttributeError:
 
-        sale_price = "Not available"
+        sale_price = "0"
+
+
     return sale_price
 
 
 def get_discount(soup):
     try:
         discount = soup.find('div', attrs={'class': '_3Ay6Sb _31Dcoz'}).text.strip()
-        print(discount)
+        discount = re.findall(r'\d+', discount)
+        discount = discount[0]
+        print(f"The discount is {discount}")
 
     except AttributeError:
         discount = "0"
 
     return discount
 
-
-def get_oxymeter_type(soup):
-    try:
-        oxymeter_type = soup.find('li', attrs={'class': '_21lJbe'}).text.strip()
-        print(oxymeter_type)
-
-    except AttributeError:
-
-        oxymeter_type = "Type not available"
-    return oxymeter_type
-
-
 def get_description(soup):
     try:
         description = soup.find('div', attrs={'class': '_1mXcCf RmoJUa'}).text.strip()
-        print(description)
+        print(f"The description is {description}")
     except AttributeError:
         description = "Description Not available"
 
@@ -144,11 +151,30 @@ def get_description(soup):
 def get_seller_name(soup):
     try:
         seller_name = soup.find('div', attrs={'class': '_1RLviY'}).text.strip()
-        print(seller_name)
+
+        seller_name = re.split("[0-9]", seller_name)
+
+        seller_name = seller_name[0]
+
+        print(f"The seller name is {seller_name}")
     except AttributeError:
         seller_name = "Name Not available"
 
     return seller_name
+
+def get_seller_rating(soup):
+
+    try:
+        seller_rating = soup.find('div', attrs={'class': '_3LWZlK _1D-8OL'}).text.strip()
+
+        print(f"The seller_rating is {seller_rating}")
+
+    except AttributeError:
+
+        seller_rating = "0"
+
+    return seller_rating
+
 
 
 def get_ratings(soup):
@@ -218,9 +244,9 @@ def parse_data():
             mrp_data = get_mrp(new_soup)
             sale_price_data = get_sale_price(new_soup)
             discount_data = get_discount(new_soup)
-            oxymeter_type_data = get_oxymeter_type(new_soup)
             description_data = get_description(new_soup)
             seller_name_data = get_seller_name(new_soup)
+            seller_rating_data = get_seller_rating(new_soup)
             ratings_data = get_ratings(new_soup)
             reviews_data = get_reviews(new_soup)
             star_ratings_data = get_star_rating(new_soup)
@@ -228,19 +254,20 @@ def parse_data():
 
             all_elements.append(  # saving all elements to a list
                 {
-                    "Title": title_data,
+
                     "Product_url": link,
                     "brand": brand_data,
+                    "Title": title_data,
                     "Description": description_data,
                     "Sale_price": sale_price_data,
                     "MRP": mrp_data,
                     "Discount_percentage": discount_data,
-                    "Oxymeter_type": oxymeter_type_data,
                     "Seller_name": seller_name_data,
+                    "seller_rating": seller_rating_data,
                     "Number_of_ratings": ratings_data,
                     "Number_of_reviews": reviews_data,
                     "UPC": upc_data,
-                    "Star_rating": star_ratings_data,
+                    "Star_rating_of_the_product": star_ratings_data,
                 })
 
             keys = all_elements[0].keys()
