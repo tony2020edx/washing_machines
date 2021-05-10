@@ -7,35 +7,17 @@ import re
 import csv
 
 base_url = [
-    "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&p%5B%5D=facets.price_range.from%3DMin&sort=price_asc&p%5B%5D=facets.price_range.to%3D1500&page=",
-
-    "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_desc&p%5B%5D=facets.price_range.from%3DMin&p%5B%5D=facets.price_range.to%3D1500&p%5B%5D=facets.rating%255B%255D%3D1%25E2%2598%2585%2B%2526%2Babove&page="''
-
-    "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_desc&p%5B%5D=facets.price_range.from%3DMin&p%5B%5D=facets.price_range.to%3D1500&p%5B%5D=facets.fulfilled_by%255B%255D%3DFlipkart%2BAssured&page=",
-
-    "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_desc&p%5B%5D=facets.price_range.from%3DMin&p%5B%5D=facets.price_range.to%3D1500&p%5B%5D=facets.discount_range_v1%255B%255D%3D50%2525%2Bor%2Bmore&page=",
-
     "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_asc&p%5B%5D=facets.price_range.from%3DMin&p%5B%5D=facets.price_range.to%3D1500&page=",
-
     "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_desc&p%5B%5D=facets.price_range.from%3DMin&p%5B%5D=facets.price_range.to%3D1500&page=",
-
     "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_desc&p%5B%5D=facets.price_range.from%3D1500&p%5B%5D=facets.price_range.to%3DMax&page=",
-
-    "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_asc&p%5B%5D=facets.price_range.from%3D1500&p%5B%5D=facets.price_range.to%3DMax&page=",
-
-    "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=recency_desc&p%5B%5D=facets.price_range.from%3D1500&p%5B%5D=facets.price_range.to%3DMax&page=",
-
-    "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=popularity&p%5B%5D=facets.price_range.from%3D1500&p%5B%5D=facets.price_range.to%3DMax&page=",
-
-    "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=popularity&p%5B%5D=facets.price_range.from%3DMin&p%5B%5D=facets.price_range.to%3D1500&page="
-
-]
+    "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_asc&p%5B%5D=facets.price_range.from%3D1500&p%5B%5D=facets.price_range.to%3DMax&page="
+    ]
 
 pagination_urls = []  # here we generate pages by concatenating the urls
 
 product_urls = []  # the urls to individual products
 
-all_elements = [] # all elements
+all_elements = []  # all elements
 
 
 def generate_page_url():  # function to generate the pagination urls and save it to the list pagination urls
@@ -204,10 +186,13 @@ def get_seller_rating(soup):
 def get_ratings(soup):
     try:
         number_of_ratings = soup.find('span', attrs={'class': '_2_R_DZ'}).text
-        temp = number_of_ratings.split()
-        ratings = temp[0].strip()
-        ratings = ratings.replace(',', '')
-        print(f" the ratings are {ratings}")
+        try:
+            temp = number_of_ratings.split()
+            ratings = temp[0].strip()
+            ratings = ratings.replace(',', '')
+            print(f" the ratings are {ratings}")
+        except IndexError:
+            ratings = "0"
     except AttributeError:
         ratings = "0"
 
@@ -217,10 +202,14 @@ def get_ratings(soup):
 def get_reviews(soup):
     try:
         number_of_reviews = soup.find('span', attrs={'class': '_2_R_DZ'}).text
-        temp = number_of_reviews.split()
-        reviews = temp[-2].strip()
-        reviews = reviews.replace(',', '')
-        print(f" the reviews are {reviews}")
+
+        try:
+            temp = number_of_reviews.split()
+            reviews = temp[-2].strip()
+            reviews = reviews.replace(',', '')
+            print(f" the reviews are {reviews}")
+        except IndexError:
+            reviews = "0"
     except AttributeError:
         reviews = "0"
     return reviews
