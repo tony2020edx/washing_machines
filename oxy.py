@@ -228,16 +228,34 @@ def parse_data():
         star_ratings_data = get_star_rating(new_soup)
         upc_data = get_upc(link)
 
+        all_elements.append(  # saving all elements to a list
+            {
+                "Title": title_data,
+                "Product_url": link,
+                "brand": brand_data,
+                "Description": description_data,
+                "Sale_price": sale_price_data,
+                "MRP": mrp_data,
+                "Discount_percentage": discount_data,
+                "Oxymeter_type": oxymeter_type_data,
+                "Seller_name": seller_name_data,
+                "Number_of_ratings": ratings_data,
+                "Number_of_reviews": reviews_data,
+                "UPC": upc_data,
+                "Star_rating": star_ratings_data,
+            })
 
+        keys = all_elements[0].keys()
 
-
-
-
+        with open('oxymeters1.csv', 'w', newline='') as output_file:  # writing all elements to csv
+            dict_writer = csv.DictWriter(output_file, keys)
+            dict_writer.writeheader()
+            dict_writer.writerows(all_elements)
 
 
 
 
 parse_data()
-print(len(product_urls))
+
 
 
