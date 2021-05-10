@@ -206,45 +206,52 @@ def get_upc(link):
 
 def parse_data():
     for link in product_urls:
+
         new_page = requests.get(link)
-        new_soup = BeautifulSoup(new_page.text, 'lxml')
 
-        title_data = get_title(new_soup)
-        brand_data = get_brand(new_soup)
-        mrp_data = get_mrp(new_soup)
-        sale_price_data = get_sale_price(new_soup)
-        discount_data = get_discount(new_soup)
-        oxymeter_type_data = get_oxymeter_type(new_soup)
-        description_data = get_description(new_soup)
-        seller_name_data = get_seller_name(new_soup)
-        ratings_data = get_ratings(new_soup)
-        reviews_data = get_reviews(new_soup)
-        star_ratings_data = get_star_rating(new_soup)
-        upc_data = get_upc(link)
+        if new_page.status_code == 200:
 
-        all_elements.append(  # saving all elements to a list
-            {
-                "Title": title_data,
-                "Product_url": link,
-                "brand": brand_data,
-                "Description": description_data,
-                "Sale_price": sale_price_data,
-                "MRP": mrp_data,
-                "Discount_percentage": discount_data,
-                "Oxymeter_type": oxymeter_type_data,
-                "Seller_name": seller_name_data,
-                "Number_of_ratings": ratings_data,
-                "Number_of_reviews": reviews_data,
-                "UPC": upc_data,
-                "Star_rating": star_ratings_data,
-            })
+            new_soup = BeautifulSoup(new_page.text, 'lxml')
 
-        keys = all_elements[0].keys()
+            title_data = get_title(new_soup)
+            brand_data = get_brand(new_soup)
+            mrp_data = get_mrp(new_soup)
+            sale_price_data = get_sale_price(new_soup)
+            discount_data = get_discount(new_soup)
+            oxymeter_type_data = get_oxymeter_type(new_soup)
+            description_data = get_description(new_soup)
+            seller_name_data = get_seller_name(new_soup)
+            ratings_data = get_ratings(new_soup)
+            reviews_data = get_reviews(new_soup)
+            star_ratings_data = get_star_rating(new_soup)
+            upc_data = get_upc(link)
 
-        with open('oxymeters1.csv', 'w', newline='') as output_file:  # writing all elements to csv
-            dict_writer = csv.DictWriter(output_file, keys)
-            dict_writer.writeheader()
-            dict_writer.writerows(all_elements)
+            all_elements.append(  # saving all elements to a list
+                {
+                    "Title": title_data,
+                    "Product_url": link,
+                    "brand": brand_data,
+                    "Description": description_data,
+                    "Sale_price": sale_price_data,
+                    "MRP": mrp_data,
+                    "Discount_percentage": discount_data,
+                    "Oxymeter_type": oxymeter_type_data,
+                    "Seller_name": seller_name_data,
+                    "Number_of_ratings": ratings_data,
+                    "Number_of_reviews": reviews_data,
+                    "UPC": upc_data,
+                    "Star_rating": star_ratings_data,
+                })
+
+            keys = all_elements[0].keys()
+
+            with open('oxymeters1.csv', 'w', newline='') as output_file:  # writing all elements to csv
+                dict_writer = csv.DictWriter(output_file, keys)
+                dict_writer.writeheader()
+                dict_writer.writerows(all_elements)
+
+        else:
+            pass
 
 
 parse_data()
