@@ -35,7 +35,7 @@ pagination_urls = []  # here we generate pages by concatenating the urls
 
 product_urls = []  # the urls to individual products
 
-all_elements = []
+all_elements = [] # all elements
 
 
 def generate_page_url():  # function to generate the pagination urls and save it to the list pagination urls
