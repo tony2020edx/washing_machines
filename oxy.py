@@ -56,11 +56,7 @@ def get_data():  # function to parse data from each url generated in the generat
 
                 product_urls.append(item_url)
 
-                upc = re.split("\=", item_url)
-                upc = upc[-1]
-                upc = upc.replace(',', '')
 
-                print(upc)
 get_data()
 
 
@@ -68,6 +64,7 @@ def get_title(soup):
 
     try:
         title = soup.find('span', attrs={'class': 'B_NuCI'}).text.strip()
+
         print(title)
 
     except AttributeError:
@@ -75,6 +72,19 @@ def get_title(soup):
         title = ""
 
     return title
+
+def get_brand(soup):
+
+    try:
+        brand_name = soup.find('span', attrs={'class': 'B_NuCI'}).text
+        brand = brand_name.split()
+        brand = brand[0]
+        print(brand)
+
+    except AttributeError:
+        brand = " Not Available"
+
+    return brand
 
 def get_mrp(soup):
 
@@ -181,6 +191,22 @@ def get_star_rating(soup):
 
     return star_rating
 
+def get_upc(link):
+
+    try:
+
+        upc = re.split("\=", link)
+        upc = upc[-1]
+        upc = upc.replace(',', '')
+
+        print(f"The upc is {upc}")
+
+    except AttributeError:
+        upc = "Not available"
+
+    return upc
+
+
 
 def parse_data():
 
@@ -190,6 +216,7 @@ def parse_data():
         new_soup = BeautifulSoup(new_page.text, 'lxml')
 
         title_data = get_title(new_soup)
+        brand_data = get_brand(new_soup)
         mrp_data = get_mrp(new_soup)
         sale_price_data = get_sale_price(new_soup)
         discount_data = get_discount(new_soup)
@@ -199,26 +226,18 @@ def parse_data():
         ratings_data = get_ratings(new_soup)
         reviews_data = get_reviews(new_soup)
         star_ratings_data = get_star_rating(new_soup)
-
-        all_elements.append(  # saving all elements to a list
-            {
-                "Product_name": name,
-                "Product_url": item_url,
-                "brand": brand,
-                "Sale_price": price,
-                "MRP": mrp,
-                "Discount_percentage": discount,
-                "Number_of_ratings": ratings,
-                "Number_of_reviews": reviews,
-                "Type_of_washing": load_type,
-                "UPC": upc,
-                "Star_rating": star_rating
+        upc_data = get_upc(link)
 
 
 
 
 
-                parse_data()
+
+
+
+
+
+parse_data()
 print(len(product_urls))
 
 
