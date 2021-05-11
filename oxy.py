@@ -21,8 +21,6 @@ pagination_urls = []  # here we generate pages by concatenating the urls
 
 product_urls = []
 
-unique_urls = set(product_urls)
-
 all_elements = []  # all elements
 
 
