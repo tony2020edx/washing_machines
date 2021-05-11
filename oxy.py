@@ -141,6 +141,7 @@ def get_discount(soup):
 
     except AttributeError:
         discount = "0"
+        print("DISCOUNT NOT AVAILABLE")
 
     return discount
 
@@ -151,6 +152,7 @@ def get_description(soup):
         print(f"The description is {description}")
     except AttributeError:
         description = "Description Not available"
+        print(description)
 
     return description
 
