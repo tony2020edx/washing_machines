@@ -147,7 +147,7 @@ def get_discount(soup):
 
 def get_description(soup):
     try:
-        description = soup.find('div', attrs={'class': '_1mXcCf RmoJUa'}).text.strip()
+        description = soup.find('div', attrs={'class': '_2o-xpa'}).text.strip()
         print(f"The description is {description}")
     except AttributeError:
         description = "Description Not available"
