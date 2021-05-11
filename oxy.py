@@ -6,16 +6,22 @@ import re
 
 import csv
 
+import time
+
+begin = time.time()
+
 base_url = [
     "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_asc&p%5B%5D=facets.price_range.from%3DMin&p%5B%5D=facets.price_range.to%3D1500&page=",
     "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_desc&p%5B%5D=facets.price_range.from%3DMin&p%5B%5D=facets.price_range.to%3D1500&page=",
     "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_desc&p%5B%5D=facets.price_range.from%3D1500&p%5B%5D=facets.price_range.to%3DMax&page=",
     "https://www.flipkart.com/search?q=pulse+oximeter&sid=zlw%2Cnyl%2Cbvv%2Cb5f&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_14_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=pulse+oximeter%7CPulse+Oximeters&requestId=79f2ffc9-48e8-4083-82bb-eed5c2f3640f&as-searchtext=pulse+oximeter&sort=price_asc&p%5B%5D=facets.price_range.from%3D1500&p%5B%5D=facets.price_range.to%3DMax&page="
-    ]
+]
 
 pagination_urls = []  # here we generate pages by concatenating the urls
 
-product_urls = []  # the urls to individual products
+product_urls = []
+
+unique_urls = set(product_urls)
 
 all_elements = []  # all elements
 
@@ -64,6 +70,8 @@ def get_data():  # function to get product page links
 
 
 get_data()
+
+unique_urls = set(product_urls)
 
 
 def get_title(soup):  # function to extract title
@@ -212,8 +220,10 @@ def get_reviews(soup):
             print(f" the reviews are {reviews}")
         except IndexError:
             reviews = "0"
+            print(f" the reviews are {reviews}")
     except AttributeError:
         reviews = "0"
+        print(f" the reviews are {reviews}")
     return reviews
 
 
@@ -226,6 +236,7 @@ def get_star_rating(soup):
     except AttributeError:
 
         star_rating = "Not available"
+        print(f" the star_rating is {star_rating}")
 
     return star_rating
 
@@ -244,9 +255,25 @@ def get_upc(link):
 
     return upc
 
+def get_assurence_data(soup):
+
+    try:
+        image_links = soup.find('img', attrs = {'class': 'jMnjzX'})
+        src = image_links.get('src')
+        print(f" The image link is {src}")
+        flipkart_assured = "Yes"
+        print(flipkart_assured)
+
+    except AttributeError:
+
+        flipkart_assured = "No"
+        print(flipkart_assured)
+
+    return flipkart_assured
+
 
 def parse_data():
-    for link in product_urls:
+    for link in unique_urls:
 
         new_page = requests.get(link)
 
@@ -266,6 +293,7 @@ def parse_data():
             reviews_data = get_reviews(new_soup)
             star_ratings_data = get_star_rating(new_soup)
             upc_data = get_upc(link)
+            flipkart_assurance = get_assurence_data(new_soup)
 
             all_elements.append(  # saving all elements to a list
                 {
@@ -283,11 +311,12 @@ def parse_data():
                     "Number_of_reviews": reviews_data,
                     "UPC": upc_data,
                     "Star_rating_of_the_product": star_ratings_data,
+                    "Flipkart Assurance": flipkart_assurance
                 })
 
             keys = all_elements[0].keys()
 
-            with open('oxymeters4.csv', 'w', newline='') as output_file:  # writing all elements to csv
+            with open('oxymeters5.csv', 'w', newline='') as output_file:  # writing all elements to csv
                 dict_writer = csv.DictWriter(output_file, keys)
                 dict_writer.writeheader()
                 dict_writer.writerows(all_elements)
@@ -298,3 +327,6 @@ def parse_data():
 
 parse_data()
 print(len(product_urls))
+print(len(unique_urls))
+end = time.time()
+print(f"Total runtime of the program is {end - begin}")
