@@ -19,7 +19,7 @@ def generate_page_url():  # function to generate the pagination urls and save it
 
     count = 0
 
-    while count < 3:
+    while count < 38:
         page_url = base_url + str(count) #generating the url
 
         print(page_url)
