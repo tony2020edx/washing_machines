@@ -19,7 +19,7 @@ def generate_page_url():  # function to generate the pagination urls and save it
 
     count = 0
 
-    while count < 32:
+    while count < 3:
         page_url = base_url + str(count) #generating the url
 
         print(page_url)
@@ -171,7 +171,7 @@ def get_urls(): #function to parse data from each url generated in the generate 
 
                 keys = all_elements[0].keys()
 
-                with open('washing_machinesv1.csv', 'w', newline='') as output_file:  # writing all elements to csv
+                with open('washing_machinesv2.csv', 'w', newline='') as output_file:  # writing all elements to csv
                     dict_writer = csv.DictWriter(output_file, keys)
                     dict_writer.writeheader()
                     dict_writer.writerows(all_elements)

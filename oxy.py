@@ -80,7 +80,7 @@ def get_title(soup):  # function to extract title
 
     except AttributeError:
 
-        title = ""
+        title = " Title not available"
 
     return title
 
@@ -172,7 +172,9 @@ def get_seller_name(soup):
         seller_name = seller_name[0]
 
         print(f"The seller name is {seller_name}")
+
     except AttributeError:
+
         seller_name = "Name Not available"
 
     return seller_name
