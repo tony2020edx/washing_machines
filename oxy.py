@@ -230,7 +230,7 @@ def get_reviews(soup):
 def get_star_rating(soup):
     try:
 
-        star_rating = soup.find('div', attrs={'class': '_3LWZlK'}).text.strip()
+        star_rating = soup.find('div', attrs={'class': '_2d4LTz'}).text.strip()
         print(f" the star_rating is {star_rating}")
 
     except AttributeError:
