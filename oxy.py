@@ -24,13 +24,15 @@ product_urls = []
 all_elements = []  # all elements
 
 
+
+
 def generate_page_url():  # function to generate the pagination urls and save it to the list pagination urls
 
     for i in range(len(base_url)):
 
         count = 0
 
-        while count < 38:
+        while count < 40:
             page_url = base_url[i] + str(count)  # generating the url
 
             print(page_url)
@@ -165,30 +167,55 @@ def get_description(soup):
 
 def get_seller_name(soup):
     try:
-        seller_name = soup.find('div', attrs={'class': '_1RLviY'}).text.strip()
+        seller_name_string = soup.find('div', id="sellerName").text.strip()
 
-        seller_name = re.split("[0-9]", seller_name)
+        try:
 
-        seller_name = seller_name[0]
+            seller_name = seller_name_string.replace('.', '')
 
-        print(f"The seller name is {seller_name}")
+            seller_name = ''.join([i for i in seller_name if not i.isdigit()])
+
+            print(seller_name)
+
+        except Exception as e:
+
+            seller_name = "Not available"
+            print(seller_name)
 
     except AttributeError:
 
-        seller_name = "Name Not available"
+        seller_name = "Not available"
+        print(seller_name)
 
     return seller_name
 
 
-def get_seller_rating(soup):
+def get_seller_star_rating(soup):
     try:
-        seller_rating = soup.find('div', attrs={'class': '_3LWZlK _1D-8OL'}).text.strip()
+        seller_string = soup.find('div', attrs={'class': '_3LWZlK _1D-8OL'}).text.strip()
 
-        print(f"The seller_rating is {seller_rating}")
+        def convert(string):
+            list1 = []
+            list1[:0] = string
+            return list1
+
+        my_list = convert(seller_string)
+
+        if '.' in my_list:
+
+            seller_rating = my_list[-3] + '.' + my_list[-1]
+
+            print(f"the seller_rating is a float {seller_rating}")
+
+        else:
+
+            seller_rating = my_list[-1]
+            print(f" the seller_rating is integer {seller_rating}")
+
 
     except AttributeError:
-
-        seller_rating = "0"
+        seller_rating = 0
+        print(f"the rating is {seller_rating}")
 
     return seller_rating
 
@@ -209,21 +236,30 @@ def get_ratings(soup):
     return ratings
 
 
-def get_reviews(soup):
+def get_reviews_count(soup):
     try:
-        number_of_reviews = soup.find('span', attrs={'class': '_2_R_DZ'}).text
+
+        user_string = soup.find('span', attrs={'class': '_2_R_DZ'}).text
+
+        user_string = user_string.split()
 
         try:
-            temp = number_of_reviews.split()
-            reviews = temp[-2].strip()
-            reviews = reviews.replace(',', '')
+            reviews = user_string[-2]
+
             print(f" the reviews are {reviews}")
+
         except IndexError:
-            reviews = "0"
-            print(f" the reviews are {reviews}")
+
+            reviews = "131415"
+            print(reviews)
+
+
+
     except AttributeError:
+
         reviews = "0"
-        print(f" the reviews are {reviews}")
+        print(f" the review of the product is  {reviews}")
+
     return reviews
 
 
@@ -288,9 +324,9 @@ def parse_data():
             discount_data = get_discount(new_soup)
             description_data = get_description(new_soup)
             seller_name_data = get_seller_name(new_soup)
-            seller_rating_data = get_seller_rating(new_soup)
+            seller_rating_data = get_seller_star_rating(new_soup)
             ratings_data = get_ratings(new_soup)
-            reviews_data = get_reviews(new_soup)
+            reviews_data = get_reviews_count(new_soup)
             star_ratings_data = get_star_rating(new_soup)
             upc_data = get_upc(link)
             flipkart_assurance = get_assurence_data(new_soup)
