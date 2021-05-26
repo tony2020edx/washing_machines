@@ -92,8 +92,7 @@ def get_title(soup):  # function to extract title #tested ok
     return title
 
 
-def Convert(
-        lst):  # This function converts consecutive items of a list into key value pairs. This comes in handy when we have extracted the td values on the get_spec function
+def Convert(lst):  # This function converts consecutive items of a list into key value pairs. This comes in handy when we have extracted the td values on the get_spec function
     res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
     return res_dct
 
