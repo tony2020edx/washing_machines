@@ -10,18 +10,19 @@ import time
 
 begin = time.time()
 
-base_url = ["https://www.flipkart.com/sony-wh-ch510-google-assistant-enabled-bluetooth-headset/p/itm4c2d049ea4e74?pid=ACCFKYCBAETWPBZX",
-            "https://www.flipkart.com/boat-bassheads-103-blue-wired-headset/p/itm21547b132f2a3?pid=ACCFGYHHKJ94GN6A",
-            "https://www.flipkart.com/jbl-c150si-wired-headset/p/itme30a606bdfa6b?pid=ACCEHDJBEJSQYYKU",
-            "https://www.flipkart.com/jabra-elite-active-75t-noise-cancellation-enabled-bluetooth-headset/p/itm692cf3c604b25?pid=ACCFPU9YFPQPQVZB",
-            "https://www.flipkart.com/zebronics-zeb-symphony-bluetooth-headset/p/itma31142ddccd37?pid=ACCFGAAGPGGTMQVB",
-            "https://www.flipkart.com/sennheiser-pc-8-usb-wired-headset/p/itm725f8c6c51662?pid=ACCDAYUJDUWRJEDX",
-            "https://www.flipkart.com/apple-airpods-pro-wireless-charging-case-active-noise-cancellation-enabled-bluetooth-headset/p/itmf54912ef1bd8b?pid=ACCFHYJ8ZU9WDHDW",
-            "https://www.flipkart.com/beats-flex-bluetooth-headset/p/itmdf07c37903f23?pid=ACCFY7EHZDU2YVSF&lid=LSTACCFY7EHZDU2YVSFFWBB8K",
-            "https://www.flipkart.com/skullcandy-uproar-bluetooth-headset-mic/p/itmc64b5973674db?pid=ACCEAY5FXE76HJVJ&lid=LSTACCEAY5FXE76HJVJQHWHIS",
-            "https://www.flipkart.com/bose-quitecomfort-earbuds-bluetooth-headset/p/itm2496279be74bc?pid=ACCFVDF7QG4QJZV6"]
+all_elements = []
 
-
+base_url = [
+    "https://www.flipkart.com/sony-wh-ch510-google-assistant-enabled-bluetooth-headset/p/itm4c2d049ea4e74?pid=ACCFKYCBAETWPBZX",
+    "https://www.flipkart.com/boat-bassheads-103-blue-wired-headset/p/itm21547b132f2a3?pid=ACCFGYHHKJ94GN6A",
+    "https://www.flipkart.com/jbl-c150si-wired-headset/p/itme30a606bdfa6b?pid=ACCEHDJBEJSQYYKU",
+    "https://www.flipkart.com/jabra-elite-active-75t-noise-cancellation-enabled-bluetooth-headset/p/itm692cf3c604b25?pid=ACCFPU9YFPQPQVZB",
+    "https://www.flipkart.com/zebronics-zeb-symphony-bluetooth-headset/p/itma31142ddccd37?pid=ACCFGAAGPGGTMQVB",
+    "https://www.flipkart.com/sennheiser-pc-8-usb-wired-headset/p/itm725f8c6c51662?pid=ACCDAYUJDUWRJEDX",
+    "https://www.flipkart.com/apple-airpods-pro-wireless-charging-case-active-noise-cancellation-enabled-bluetooth-headset/p/itmf54912ef1bd8b?pid=ACCFHYJ8ZU9WDHDW",
+    "https://www.flipkart.com/beats-flex-bluetooth-headset/p/itmdf07c37903f23?pid=ACCFY7EHZDU2YVSF&lid=LSTACCFY7EHZDU2YVSFFWBB8K",
+    "https://www.flipkart.com/skullcandy-uproar-bluetooth-headset-mic/p/itmc64b5973674db?pid=ACCEAY5FXE76HJVJ&lid=LSTACCEAY5FXE76HJVJQHWHIS",
+    "https://www.flipkart.com/bose-quitecomfort-earbuds-bluetooth-headset/p/itm2496279be74bc?pid=ACCFVDF7QG4QJZV6"]
 
 
 def get_title(soup):  # function to extract title #tested ok
@@ -35,6 +36,7 @@ def get_title(soup):  # function to extract title #tested ok
         title = " Title not available"
 
     return title
+
 
 def Convert(lst):
     res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
@@ -164,7 +166,8 @@ def battery_life(soup):
 
     return battery_life_data
 
-def get_brand(soup): #tested and verified
+
+def get_brand(soup):  # tested and verified
     try:
         brand_name = soup.find('span', attrs={'class': 'B_NuCI'}).text
         brand = brand_name.split()
@@ -177,7 +180,7 @@ def get_brand(soup): #tested and verified
     return brand
 
 
-def get_mrp(soup): #tested ok
+def get_mrp(soup):  # tested ok
     try:
 
         mrp = soup.find('div', attrs={'class': '_3I9_wc _2p6lqe'}).text.strip()
@@ -202,7 +205,7 @@ def get_mrp(soup): #tested ok
     return mrp
 
 
-def get_sale_price(soup): #tested ok
+def get_sale_price(soup):  # tested ok
     try:
         sale_price = soup.find('div', attrs={'class': '_30jeq3 _16Jk6d'}).text.strip()
         sale_price = re.split("₹", sale_price)
@@ -217,7 +220,7 @@ def get_sale_price(soup): #tested ok
     return sale_price
 
 
-def get_discount(soup): #tested ok
+def get_discount(soup):  # tested ok
     try:
         discount = soup.find('div', attrs={'class': '_3Ay6Sb _31Dcoz'}).text.strip()
         discount = re.findall(r'\d+', discount)
@@ -289,7 +292,6 @@ def get_seller_star_rating(soup):
             seller_rating = my_list[-1]
             print(f" the seller_rating is integer {seller_rating}")
 
-
     except AttributeError:
         seller_rating = 0
         print(f"the rating is {seller_rating}")
@@ -330,8 +332,6 @@ def get_reviews_count(soup):
             reviews = "131415"
             print(reviews)
 
-
-
     except AttributeError:
 
         reviews = "0"
@@ -368,8 +368,8 @@ def get_upc(link):
 
     return upc
 
-def parse_data():
 
+def parse_data():
     for link in base_url:
 
         new_page = requests.get(link)
@@ -390,6 +390,14 @@ def parse_data():
             reviews_data = get_reviews_count(new_soup)
             star_ratings_data = get_star_rating(new_soup)
             upc_data = get_upc(link)
+            color = get_color(new_soup)
+            model = get_model(new_soup)
+            headphone_type = get_headphone_type(new_soup)
+            sweat_proof_data = sweat_proof(new_soup)
+            water_resistance = water_resistant(new_soup)
+            microphone_data = microphone(new_soup)
+            connectivity_data = connectivity(new_soup)
+            battery_data = battery_life(new_soup)
 
             all_elements.append(  # saving all elements to a list
                 {
@@ -407,12 +415,20 @@ def parse_data():
                     "Number_of_reviews": reviews_data,
                     "UPC": upc_data,
                     "Star_rating_of_the_product": star_ratings_data,
-                    "Flipkart Assurance": flipkart_assurance
+                    "Color": color,
+                    "Model": model,
+                    "Headphone Type": headphone_type,
+                    "Is sweatproof": sweat_proof_data,
+                    "Is water resistant": water_resistance,
+                    "Microphon": microphone_data,
+                    "Connectivity": connectivity_data,
+                    "Battery lif": battery_data
+
                 })
 
             keys = all_elements[0].keys()
 
-            with open('oxymeters5.csv', 'w', newline='') as output_file:  # writing all elements to csv
+            with open('headphones.csv', 'w', newline='') as output_file:  # writing all elements to csv
                 dict_writer = csv.DictWriter(output_file, keys)
                 dict_writer.writeheader()
                 dict_writer.writerows(all_elements)
@@ -422,7 +438,7 @@ def parse_data():
 
 
 parse_data()
-print(len(product_urls))
-print(len(unique_urls))
+# print(len(product_urls))
+# print(len(unique_urls))
 end = time.time()
 print(f"Total runtime of the program is {end - begin}")
