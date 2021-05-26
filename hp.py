@@ -12,17 +12,71 @@ begin = time.time()
 
 all_elements = []
 
+pagination_urls = []
+
+product_urls = []
+
 base_url = [
-    "https://www.flipkart.com/sony-wh-ch510-google-assistant-enabled-bluetooth-headset/p/itm4c2d049ea4e74?pid=ACCFKYCBAETWPBZX",
-    "https://www.flipkart.com/boat-bassheads-103-blue-wired-headset/p/itm21547b132f2a3?pid=ACCFGYHHKJ94GN6A",
-    "https://www.flipkart.com/jbl-c150si-wired-headset/p/itme30a606bdfa6b?pid=ACCEHDJBEJSQYYKU",
-    "https://www.flipkart.com/jabra-elite-active-75t-noise-cancellation-enabled-bluetooth-headset/p/itm692cf3c604b25?pid=ACCFPU9YFPQPQVZB",
-    "https://www.flipkart.com/zebronics-zeb-symphony-bluetooth-headset/p/itma31142ddccd37?pid=ACCFGAAGPGGTMQVB",
-    "https://www.flipkart.com/sennheiser-pc-8-usb-wired-headset/p/itm725f8c6c51662?pid=ACCDAYUJDUWRJEDX",
-    "https://www.flipkart.com/apple-airpods-pro-wireless-charging-case-active-noise-cancellation-enabled-bluetooth-headset/p/itmf54912ef1bd8b?pid=ACCFHYJ8ZU9WDHDW",
-    "https://www.flipkart.com/beats-flex-bluetooth-headset/p/itmdf07c37903f23?pid=ACCFY7EHZDU2YVSF&lid=LSTACCFY7EHZDU2YVSFFWBB8K",
-    "https://www.flipkart.com/skullcandy-uproar-bluetooth-headset-mic/p/itmc64b5973674db?pid=ACCEAY5FXE76HJVJ&lid=LSTACCEAY5FXE76HJVJQHWHIS",
-    "https://www.flipkart.com/bose-quitecomfort-earbuds-bluetooth-headset/p/itm2496279be74bc?pid=ACCFVDF7QG4QJZV6"]
+    "https://www.flipkart.com/search?q=headphones&sid=0pm%2Cfcn&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_4_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_4_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=headphones%7CHeadphones+%26+Earphones&requestId=6fdb854e-1a91-4a16-afc5-9fc38f88577c&as-searchtext=head&p%5B%5D=facets.brand%255B%255D%3DJBL&p%5B%5D=facets.brand%255B%255D%3DSkullcandy&p%5B%5D=facets.brand%255B%255D%3DSennheiser&p%5B%5D=facets.brand%255B%255D%3DBose&p%5B%5D=facets.brand%255B%255D%3DSONY&p%5B%5D=facets.brand%255B%255D%3DboAt&p%5B%5D=facets.brand%255B%255D%3DZEBRONICS&p%5B%5D=facets.brand%255B%255D%3DAPPLE&p%5B%5D=facets.brand%255B%255D%3DJabra&p%5B%5D=facets.brand%255B%255D%3DBeats&p%5B%5D=facets.headphone_type%255B%255D%3DIn%2Bthe%2BEar&page=",
+    "https://www.flipkart.com/search?q=headphones&sid=0pm%2Cfcn&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_4_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_4_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=headphones%7CHeadphones+%26+Earphones&requestId=6fdb854e-1a91-4a16-afc5-9fc38f88577c&as-searchtext=head&p%5B%5D=facets.brand%255B%255D%3DJBL&p%5B%5D=facets.brand%255B%255D%3DSkullcandy&p%5B%5D=facets.brand%255B%255D%3DSennheiser&p%5B%5D=facets.brand%255B%255D%3DBose&p%5B%5D=facets.brand%255B%255D%3DSONY&p%5B%5D=facets.brand%255B%255D%3DboAt&p%5B%5D=facets.brand%255B%255D%3DZEBRONICS&p%5B%5D=facets.brand%255B%255D%3DAPPLE&p%5B%5D=facets.brand%255B%255D%3DJabra&p%5B%5D=facets.brand%255B%255D%3DBeats&p%5B%5D=facets.headphone_type%255B%255D%3DOn%2Bthe%2BEar&page=",
+    "https://www.flipkart.com/search?q=headphones&sid=0pm%2Cfcn&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_4_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_4_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=headphones%7CHeadphones+%26+Earphones&requestId=6fdb854e-1a91-4a16-afc5-9fc38f88577c&as-searchtext=head&p%5B%5D=facets.brand%255B%255D%3DJBL&p%5B%5D=facets.brand%255B%255D%3DSkullcandy&p%5B%5D=facets.brand%255B%255D%3DSennheiser&p%5B%5D=facets.brand%255B%255D%3DBose&p%5B%5D=facets.brand%255B%255D%3DSONY&p%5B%5D=facets.brand%255B%255D%3DboAt&p%5B%5D=facets.brand%255B%255D%3DZEBRONICS&p%5B%5D=facets.brand%255B%255D%3DAPPLE&p%5B%5D=facets.brand%255B%255D%3DJabra&p%5B%5D=facets.brand%255B%255D%3DBeats&p%5B%5D=facets.headphone_type%255B%255D%3DTrue%2BWireless&page=",
+    "https://www.flipkart.com/search?q=headphones&sid=0pm%2Cfcn&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_4_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_4_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=headphones%7CHeadphones+%26+Earphones&requestId=6fdb854e-1a91-4a16-afc5-9fc38f88577c&as-searchtext=head&p%5B%5D=facets.brand%255B%255D%3DJBL&p%5B%5D=facets.brand%255B%255D%3DSkullcandy&p%5B%5D=facets.brand%255B%255D%3DSennheiser&p%5B%5D=facets.brand%255B%255D%3DBose&p%5B%5D=facets.brand%255B%255D%3DSONY&p%5B%5D=facets.brand%255B%255D%3DboAt&p%5B%5D=facets.brand%255B%255D%3DZEBRONICS&p%5B%5D=facets.brand%255B%255D%3DAPPLE&p%5B%5D=facets.brand%255B%255D%3DJabra&p%5B%5D=facets.brand%255B%255D%3DBeats&sort=popularity&page=",
+    "https://www.flipkart.com/search?q=headphones&sid=0pm%2Cfcn&as=on&as-show=on&otracker=AS_QueryStore_HistoryAutoSuggest_1_4_na_na_na&otracker1=AS_QueryStore_HistoryAutoSuggest_1_4_na_na_na&as-pos=1&as-type=HISTORY&suggestionId=headphones%7CHeadphones+%26+Earphones&requestId=6fdb854e-1a91-4a16-afc5-9fc38f88577c&as-searchtext=head&p%5B%5D=facets.brand%255B%255D%3DJBL&p%5B%5D=facets.brand%255B%255D%3DSkullcandy&p%5B%5D=facets.brand%255B%255D%3DSennheiser&p%5B%5D=facets.brand%255B%255D%3DBose&p%5B%5D=facets.brand%255B%255D%3DSONY&p%5B%5D=facets.brand%255B%255D%3DboAt&p%5B%5D=facets.brand%255B%255D%3DZEBRONICS&p%5B%5D=facets.brand%255B%255D%3DAPPLE&p%5B%5D=facets.brand%255B%255D%3DJabra&p%5B%5D=facets.brand%255B%255D%3DBeats&sort=recency_desc&page="
+    ]
+
+
+retry_links = []
+
+retry_paginatin_urls = []
+
+def generate_page_url():  # function to generate the pagination urls and save it to the list pagination urls
+
+    for i in range(len(base_url)):
+
+        count = 0
+
+        while count < 40:
+            page_url = base_url[i] + str(count)  # generating the url
+
+            print(page_url)
+
+            pagination_urls.append(page_url)  # append to the list pagination urls
+
+            print(count)
+
+            count = count + 1
+
+
+generate_page_url()
+
+
+def get_data():  # function to get product page links
+
+    for page in pagination_urls:
+
+        response = requests.get(page)
+
+        if response.status_code == 200:
+
+            soup = BeautifulSoup(response.text, 'lxml')
+
+            for link in soup.find_all('a', attrs={'class': 's1Q9rs'}):
+                item_url = " https://www.flipkart.com" + link.get('href')
+
+                item_url = re.split("&", item_url)
+
+                item_url = item_url[0]
+
+                print(f"The url is {item_url}")
+
+                product_urls.append(item_url)
+        else:
+
+            retry_paginatin_urls.append(link)
+
+get_data()
+
+unique_urls = set(product_urls)
 
 
 def get_title(soup):  # function to extract title #tested ok
@@ -38,7 +92,8 @@ def get_title(soup):  # function to extract title #tested ok
     return title
 
 
-def Convert(lst):
+def Convert(
+        lst):  # This function converts consecutive items of a list into key value pairs. This comes in handy when we have extracted the td values on the get_spec function
     res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
     return res_dct
 
@@ -51,7 +106,7 @@ def get_spec_list(soup):
     for col in clumns:
         listofspecs.append(col.text.strip())
 
-    spec_dict = Convert(listofspecs)
+    spec_dict = Convert(listofspecs)  # converting the list of specifications into key value pairs
 
     return spec_dict
 
@@ -325,11 +380,13 @@ def get_reviews_count(soup):
         try:
             reviews = user_string[-2]
 
+            reviews = reviews.replace(',', '')
+
             print(f" the reviews are {reviews}")
 
         except IndexError:
 
-            reviews = "131415"
+            reviews = "Not available"
             print(reviews)
 
     except AttributeError:
@@ -370,7 +427,8 @@ def get_upc(link):
 
 
 def parse_data():
-    for link in base_url:
+
+    for link in unique_urls:
 
         new_page = requests.get(link)
 
@@ -422,7 +480,7 @@ def parse_data():
                     "Is water resistant": water_resistance,
                     "Microphon": microphone_data,
                     "Connectivity": connectivity_data,
-                    "Battery lif": battery_data
+                    "Battery life": battery_data
 
                 })
 
@@ -434,11 +492,14 @@ def parse_data():
                 dict_writer.writerows(all_elements)
 
         else:
-            pass
+
+            retry_links.append(link)
 
 
 parse_data()
-# print(len(product_urls))
-# print(len(unique_urls))
+print(len(product_urls))
+print(len(unique_urls))
+print(len(retry_links))
+print(retry_links)
 end = time.time()
 print(f"Total runtime of the program is {end - begin}")
