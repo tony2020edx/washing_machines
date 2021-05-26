@@ -40,102 +40,129 @@ def Convert(lst):
     res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
     return res_dct
 
-def get_specs(soup):#tested ok
 
-    rows = soup.find_all('tr')
-    clumns = soup.find_all('td')
-
+def get_spec_list(soup):
     listofspecs = []
 
-    for col in clumns:
+    clumns = soup.find_all('td')
 
+    for col in clumns:
         listofspecs.append(col.text.strip())
 
-    print(listofspecs)
+    spec_dict = Convert(listofspecs)
 
-    dict_date = Convert(listofspecs)
+    return spec_dict
+
+
+def get_color(soup):
+    dict_data = get_spec_list(soup)
 
     try:
-        model_name = dict_date['Model Name']
-        print(f" The model name is {model_name}")
+        color = dict_data['Color']
+        print(f" The color name is {color}")
     except Exception as e:
-        model_name = "Not available"
-        print(model_name)
+        color = "Not available"
+        print(color)
+
+    return color
+
+
+def get_model(soup):
+    dict_data = get_spec_list(soup)
 
     try:
-
-        color = dict_date['Color']
-        print(f"The color is {color}")
-
-    except Exception as e:
-
-        color = " Colour Not available"
-        print(f"The color is {color}")
-
-    try:
-        Headphone_Type = dict_date['Headphone Type']
-        print(f"The headphone type is {Headphone_Type}")
-
-    except Exception as e:
-
-        Headphone_Type = "Headphone type not available"
-        print(f"The headphone type is {Headphone_Type}")
-
-    try:
-
-        Sweat_proof = dict_date['Sweat Proof']
-
-        print(f" Sweat proof ? {Headphone_Type}")
+        model = dict_data['Model Name']
+        print(f"The model name is {model}")
 
     except Exception as e:
+        model = "The model data is not available"
+        print(model)
 
-        Sweat_proof = "Not available"
+    return model
 
-        print(Sweat_proof)
+
+def get_headphone_type(soup):
+    dict_data = get_spec_list(soup)
 
     try:
-
-        water_resistant = dict_date['Water Resistant']
-        print(water_resistant)
+        headphone_type = dict_data['Headphone Type']
+        print(f"the headphone type is {headphone_type}")
 
     except Exception as e:
 
-        water_resistant = "Not available"
-        print(water_resistant)
+        headphone_type = " Type not available"
+        print(headphone_type)
+
+    return headphone_type
+
+
+def sweat_proof(soup):
+    dict_data = get_spec_list(soup)
+
+    try:
+        sweat_proof_data = dict_data['Sweat Proof']
+        print(sweat_proof_data)
+    except Exception as e:
+        sweat_proof_data = "Not available"
+        print(f"The sweatpro0f data is {sweat_proof_data}")
+
+    return sweat_proof_data
+
+
+def water_resistant(soup):
+    dict_data = get_spec_list(soup)
 
     try:
 
-        with_microphone = dict_date['With Microphone']
-
-        print(with_microphone)
+        wanter_restistance_data = dict_data['Water Resistant']
+        print(f"The product {wanter_restistance_data} water restistant")
 
     except Exception as e:
 
-        with_microphone = "Not available"
-        print(with_microphone)
+        wanter_restistance_data = "Not available"
+        print(wanter_restistance_data)
+
+    return wanter_restistance_data
+
+
+def microphone(soup):
+    dict_data = get_spec_list(soup)
+    try:
+        microphone_data = dict_data['With Microphone']
+        print(f"is microphone available? - {microphone_data}")
+    except Exception as e:
+
+        microphone_data = "Not available"
+        print(f"is microphone data available? - {microphone_data}")
+    return microphone_data
+
+
+def connectivity(soup):
+    dict_data = get_spec_list(soup)
 
     try:
-
-        connectivity = dict_date['Connectivity']
-
-        print(connectivity)
+        connectivity_data = dict_data['Connectivity']
+        print(f"The connectivity is {connectivity_data}")
 
     except Exception as e:
 
-        connectivity = "Not available"
-        print(connectivity)
+        connectivity_data = " Not available"
+        print(connectivity_data)
 
+    return connectivity_data
+
+
+def battery_life(soup):
+    dict_data = get_spec_list(soup)
     try:
-
-        battery_life = dict_date['Battery Life']
-
-        print(f"The battery lif is {battery_life} hours")
-
+        battery_life_data = dict_data['Battery Life']
+        print(f"The battery like is {battery_life_data} ")
     except Exception as e:
 
-        battery_life = "Not available"
+        battery_life_data = "Not available"
+        print(battery_life_data)
 
-        print(f"The battery life data not available")
+    return battery_life_data
 
 def get_brand(soup): #tested and verified
     try:
