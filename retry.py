@@ -63,7 +63,7 @@ headers_list = [
 
 
 def time_delay():  # code to add a time delay between requests
-    list1 = [1, 2.8, 3.1, 4, 5.5, 6.6, 7]
+    list1 = [1, 2, 2.6, 2.8, 3.1, 3.6, 4, 4.5, 5.5, 6]
     x = random.choice(list1)
     time.sleep(x)
 
@@ -119,7 +119,7 @@ def get_data():  # function to get product page links
                 product_urls.append(item_url)
         else:
 
-            retry_paginatin_urls.append(link)
+            retry_paginatin_urls.append(page)
 
         time_delay()
 
@@ -142,8 +142,7 @@ def get_title(soup):  # function to extract title #tested ok
     return title
 
 
-def Convert(
-        lst):  # This function converts consecutive items of a list into key value pairs. This comes in handy when we have extracted the td values on the get_spec function
+def convert(lst):  # This function converts consecutive items of a list into key value pairs. This comes in handy when we have extracted the td values on the get_spec function
     res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
     return res_dct
 
@@ -156,7 +155,7 @@ def get_spec_list(soup):
     for col in clumns:
         listofspecs.append(col.text.strip())
 
-    spec_dict = Convert(listofspecs)  # converting the list of specifications into key value pairs
+    spec_dict = convert(listofspecs)  # converting the list of specifications into key value pairs
 
     return spec_dict
 
@@ -395,12 +394,12 @@ def get_seller_star_rating(soup):
     try:
         seller_string = soup.find('div', attrs={'class': '_3LWZlK _1D-8OL'}).text.strip()
 
-        def convert(string):
+        def convert_list(string):
             list1 = []
             list1[:0] = string
             return list1
 
-        my_list = convert(seller_string)
+        my_list = convert_list(seller_string)
 
         if '.' in my_list:
 
