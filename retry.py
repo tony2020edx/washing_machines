@@ -1,23 +1,14 @@
 import requests
-
 import random
-
 from bs4 import BeautifulSoup
-
 import re
-
 import pandas as pd
-
 import time
 
 begin = time.time()
-
 pagination_urls = []
-
 product_urls = []
-
 retry_links = []
-
 retry_paginatin_urls = []
 
 base_url = [
@@ -83,8 +74,6 @@ def generate_page_url():  # function to generate the pagination urls and save it
 
             page_url = base_url[i] + str(error_check)  # generating the url
 
-            print(page_url)
-
             pagination_urls.append(page_url)  # append to the list pagination urls
 
             print(error_check)
@@ -101,13 +90,14 @@ def get_data():  # function to get product page links
 
     for page in pagination_urls:
 
-        response = requests.get(page, headers=headers, timeout=5)
+        response = requests.get(page, headers=headers, timeout=8)
 
         if response.status_code == 200:
 
             soup = BeautifulSoup(response.text, 'lxml')
 
             for link in soup.find_all('a', attrs={'class': 's1Q9rs'}):
+
                 item_url = " https://www.flipkart.com" + link.get('href')
 
                 item_url = re.split("&", item_url)
@@ -148,11 +138,13 @@ def convert(lst):  # This function converts consecutive items of a list into key
 
 
 def get_spec_list(soup):
+
     listofspecs = []
 
-    clumns = soup.find_all('td')
+    columns = soup.find_all('td')
 
-    for col in clumns:
+    for col in columns:
+
         listofspecs.append(col.text.strip())
 
     spec_dict = convert(listofspecs)  # converting the list of specifications into key value pairs
@@ -161,6 +153,7 @@ def get_spec_list(soup):
 
 
 def get_color(soup):
+
     dict_data = get_spec_list(soup)
 
     try:
@@ -174,6 +167,7 @@ def get_color(soup):
 
 
 def get_model(soup):
+
     dict_data = get_spec_list(soup)
 
     try:
@@ -188,6 +182,7 @@ def get_model(soup):
 
 
 def get_headphone_type(soup):
+
     dict_data = get_spec_list(soup)
 
     try:
@@ -203,19 +198,23 @@ def get_headphone_type(soup):
 
 
 def sweat_proof(soup):
+
     dict_data = get_spec_list(soup)
 
     try:
         sweat_proof_data = dict_data['Sweat Proof']
         print(sweat_proof_data)
+
     except Exception as e:
+
         sweat_proof_data = "Not available"
-        print(f"The sweatpro0f data is {sweat_proof_data}")
+        print(f"The sweat proof data is {sweat_proof_data}")
 
     return sweat_proof_data
 
 
 def water_resistant(soup):
+
     dict_data = get_spec_list(soup)
 
     try:
@@ -232,18 +231,23 @@ def water_resistant(soup):
 
 
 def microphone(soup):
+
     dict_data = get_spec_list(soup)
+
     try:
         microphone_data = dict_data['With Microphone']
         print(f"is microphone available? - {microphone_data}")
+
     except Exception as e:
 
         microphone_data = "Not available"
         print(f"is microphone data available? - {microphone_data}")
+
     return microphone_data
 
 
 def connectivity(soup):
+
     dict_data = get_spec_list(soup)
 
     try:
@@ -259,14 +263,19 @@ def connectivity(soup):
 
 
 def clean_battery_string(test_string):
+
     if "hrs" in test_string:
 
         data = test_string.replace("hrs", '')
         print(data)
+
     elif "hr" in test_string:
+
         data = test_string.replace("hr", '')
         print(data)
+
     else:
+
         data = test_string
         print(data)
 
@@ -274,11 +283,14 @@ def clean_battery_string(test_string):
 
 
 def battery_life(soup):
+
     dict_data = get_spec_list(soup)
+
     try:
         battery_life_data = dict_data['Battery Life']
         battery_life_data = clean_battery_string(battery_life_data)
         print(f"The battery like is {battery_life_data} ")
+
     except Exception as e:
 
         battery_life_data = "Not available"
@@ -288,6 +300,7 @@ def battery_life(soup):
 
 
 def get_brand(soup):  # tested and verified
+
     try:
         brand_name = soup.find('span', attrs={'class': 'B_NuCI'}).text
         brand = brand_name.split()
@@ -295,12 +308,14 @@ def get_brand(soup):  # tested and verified
         print(f" The brand is {brand}")
 
     except AttributeError:
+
         brand = " Not Available"
 
     return brand
 
 
 def get_mrp(soup):  # tested ok
+
     try:
 
         mrp = soup.find('div', attrs={'class': '_3I9_wc _2p6lqe'}).text.strip()
@@ -326,6 +341,7 @@ def get_mrp(soup):  # tested ok
 
 
 def get_sale_price(soup):  # tested ok
+
     try:
         sale_price = soup.find('div', attrs={'class': '_30jeq3 _16Jk6d'}).text.strip()
         sale_price = re.split("₹", sale_price)
@@ -341,6 +357,7 @@ def get_sale_price(soup):  # tested ok
 
 
 def get_discount(soup):  # tested ok
+
     try:
         discount = soup.find('div', attrs={'class': '_3Ay6Sb _31Dcoz'}).text.strip()
         discount = re.findall(r'\d+', discount)
@@ -348,6 +365,7 @@ def get_discount(soup):  # tested ok
         print(f"The discount is {discount}")
 
     except AttributeError:
+
         discount = "0"
         print("DISCOUNT NOT AVAILABLE")
 
@@ -355,10 +373,14 @@ def get_discount(soup):  # tested ok
 
 
 def get_description(soup):
+
     try:
+
         description = soup.find('div', attrs={'class': '_2o-xpa'}).text.strip()
         print(f"The description is {description}")
+
     except AttributeError:
+
         description = "Description Not available"
         print(description)
 
@@ -366,6 +388,7 @@ def get_description(soup):
 
 
 def get_seller_name(soup):
+
     try:
         seller_name_string = soup.find('div', id="sellerName").text.strip()
 
@@ -391,6 +414,7 @@ def get_seller_name(soup):
 
 
 def get_seller_star_rating(soup):
+
     try:
         seller_string = soup.find('div', attrs={'class': '_3LWZlK _1D-8OL'}).text.strip()
 
@@ -420,6 +444,7 @@ def get_seller_star_rating(soup):
 
 
 def get_ratings(soup):
+
     try:
         number_of_ratings = soup.find('span', attrs={'class': '_2_R_DZ'}).text
         try:
@@ -427,15 +452,20 @@ def get_ratings(soup):
             ratings = temp[0].strip()
             ratings = ratings.replace(',', '')
             print(f" the ratings are {ratings}")
+
         except IndexError:
+
             ratings = "0"
+
     except AttributeError:
+
         ratings = "0"
 
     return ratings
 
 
 def get_reviews_count(soup):
+
     try:
 
         user_string = soup.find('span', attrs={'class': '_2_R_DZ'}).text
@@ -463,6 +493,7 @@ def get_reviews_count(soup):
 
 
 def get_star_rating(soup):
+
     try:
 
         star_rating = soup.find('div', attrs={'class': '_2d4LTz'}).text.strip()
@@ -477,6 +508,7 @@ def get_star_rating(soup):
 
 
 def get_upc(link):
+
     try:
 
         upc = re.split("=", link)
@@ -486,6 +518,7 @@ def get_upc(link):
         print(f"The upc is {upc}")
 
     except AttributeError:
+
         upc = "Not available"
 
     return upc
@@ -495,7 +528,7 @@ def parse_data():
 
     for link in unique_urls:
 
-        new_page = requests.get(link)
+        new_page = requests.get(link, headers=headers, timeout=5)
 
         if new_page.status_code == 200:
 

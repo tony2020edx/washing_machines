@@ -20,7 +20,7 @@ all_elements = []
 def read_oxi():
     filename = open('outputv15.csv', 'r')
 
-    file = csv.DictReader(filename, delimiter=';')
+    file = csv.DictReader(filename, delimiter=',')
 
     for col in file:
         url_list.append(col['Product_url'])

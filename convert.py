@@ -1,18 +1,20 @@
+text = open("headphonesV1 copy.csv", "r")
 
-user_string = '14 Ratings & 14 Reviews'
+# join() method combines all contents of
+# csvfile.csv and formed as a string
+text = ''.join([i for i in text])
 
-user_string = user_string.split()
+# search and replace the contents
+text = text.replace("hrs", "")
+text = text.replace("hr", "")
 
-print(user_string)
 
-ratings = user_string[0]
+# output.csv is the output file opened in write mode
+x = open("headphonesV1 copy.csv", "w")
 
-reviews = user_string[-2]
-
-print(f" the reviews are {reviews}")
-
-print(f"the ratins are {ratings}")
-
+# all the replaced text is written in the output.csv file
+x.writelines(text)
+x.close()
 
 
 

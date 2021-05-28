@@ -207,11 +207,27 @@ def connectivity(soup):
 
     return connectivity_data
 
+def clean_battery_string(test_string):
+
+    if "hrs" in test_string:
+
+        data = test_string.replace("hrs", '')
+        print(data)
+    elif "hr" in test_string:
+        data = test_string.replace("hr", '')
+        print(data)
+    else:
+        data = test_string
+        print(data)
+
+    return data
+
 
 def battery_life(soup):
     dict_data = get_spec_list(soup)
     try:
         battery_life_data = dict_data['Battery Life']
+        battery_life_data = clean_battery_string(battery_life_data)
         print(f"The battery like is {battery_life_data} ")
     except Exception as e:
 
