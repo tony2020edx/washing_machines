@@ -605,6 +605,7 @@ def parse_data():
                      'Connectivity': connectivity_data_list, 'Battery_life': battery_data_list}
 
             df = pd.DataFrame(dict1)
+
             df.to_csv('headphonespandas.csv')
 
         else:
