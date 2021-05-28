@@ -9,7 +9,7 @@ begin = time.time()
 pagination_urls = []
 product_urls = []
 retry_links = []
-retry_paginatin_urls = []
+retry_pagination_urls = []
 
 base_url = [
     "https://www.flipkart.com/audio-video/headphones/pr?sid=0pm%2Cfcn&q=headphones&otracker=categorytree&p%5B%5D=facets.brand%255B%255D%3DJBL&page=",
@@ -109,7 +109,7 @@ def get_data():  # function to get product page links
                 product_urls.append(item_url)
         else:
 
-            retry_paginatin_urls.append(page)
+            retry_pagination_urls.append(page)
 
         time_delay()
 
@@ -219,15 +219,15 @@ def water_resistant(soup):
 
     try:
 
-        wanter_restistance_data = dict_data['Water Resistant']
-        print(f"The product {wanter_restistance_data} water restistant")
+        water_resistance_data = dict_data['Water Resistant']
+        print(f"The product {water_resistance_data} water resistant")
 
     except Exception as e:
 
-        wanter_restistance_data = "Not available"
-        print(wanter_restistance_data)
+        water_resistance_data = "Not available"
+        print(water_resistance_data)
 
-    return wanter_restistance_data
+    return water_resistance_data
 
 
 def microphone(soup):
@@ -601,12 +601,12 @@ def parse_data():
                      'Reviews_count': reviews_count_list, 'Product_Star_ratings': star_ratings_list, 'UPC': upc_list,
                      'Color': color_list, 'Model': model_list,
                      'Headphone_type': headphone_type_list, 'Is_sweat_proof': sweat_proof_list,
-                     'Is_water_resistant': water_resistance_list, 'Mircrophone': microphone_data_list,
+                     'Is_water_resistant': water_resistance_list, 'Microphone': microphone_data_list,
                      'Connectivity': connectivity_data_list, 'Battery_life': battery_data_list}
 
             df = pd.DataFrame(dict1)
 
-            df.to_csv('headphonespandas.csv')
+            df.to_csv('headphones_pandas.csv')
 
         else:
 
