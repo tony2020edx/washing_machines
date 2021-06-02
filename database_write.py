@@ -1,9 +1,19 @@
+import pandas as pd
+
 import pymysql
 
 import time
 
-date = time.strftime('%Y-%m-%d 0:0:0')
 
+
+
+data = pd.read_csv("headphonesV1.csv")
+
+link_list = data['Product_url'].tolist()
+
+price_list = data['Sale_price'].tolist()
+
+crawled_date = time.strftime('%Y-%m-%d')
 
 connection = pymysql.connect(host='localhost',
                              user='root',
@@ -14,17 +24,25 @@ connection = pymysql.connect(host='localhost',
 my_cursor = connection.cursor()
 
 
-sql = "INSERT INTO hptable (product, saleprice, date) VALUES (%s, %s, %s)"
-val = ("Acer", "11",date)
+for i in range(len(link_list)):
+
+    link = link_list[i]
+
+    price = price_list[i]
 
 
 
-my_cursor.execute(sql,val)
+    sql = "INSERT INTO comparison (link, price, crawled_date) VALUES (%s, %s, %s)"
 
-my_cursor.execute("SELECT * from hptable")
+    val = link , price , crawled_date
 
-connection.commit()
 
+    my_cursor.execute(sql, val)
+
+    connection.commit()
+
+
+my_cursor.execute("SELECT * from comparison")
 
 result = my_cursor.fetchall()
 
