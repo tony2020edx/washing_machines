@@ -159,7 +159,9 @@ def get_color(soup):
     try:
         color = dict_data['Color']
         print(f" The color name is {color}")
+
     except Exception as e:
+
         color = "Not available"
         print(color)
 
@@ -175,6 +177,7 @@ def get_model(soup):
         print(f"The model name is {model}")
 
     except Exception as e:
+
         model = "The model data is not available"
         print(model)
 
